@@ -8,31 +8,31 @@ const { baseUrl, endpoints } = apis;
 
 const client = axios.create({ baseURL: baseUrl });
 
-async function autoSwitchToAlterBaseUrl() {
-  const response = await client.post<Record<string, string>>('').catch((error: Error | AxiosError) => {
-    if (isAxiosError(error) && error.response) {
-      // Root path is accessible, use default base url
-      return { status: error.response.status };
-    }
-    return { status: 500 };
-  });
-  if (response.status === 404) {
-    // Root path is accessible, use default base url
-    return false;
-  }
+// async function autoSwitchToAlterBaseUrl() {
+//   const response = await client.post<Record<string, string>>('').catch((error: Error | AxiosError) => {
+//     if (isAxiosError(error) && error.response) {
+//       // Root path is accessible, use default base url
+//       return { status: error.response.status };
+//     }
+//     return { status: 500 };
+//   });
+//   if (response.status === 404) {
+//     // Root path is accessible, use default base url
+//     return false;
+//   }
 
-  // Root path is not accessible, use alter base url
-  client.defaults.baseURL = apis.alterBaseUrl;
-  return true;
-}
+//   // Root path is not accessible, use alter base url
+//   client.defaults.baseURL = apis.alterBaseUrl;
+//   return true;
+// }
 
 // Auto switch to alter base url
-autoSwitchToAlterBaseUrl().then((isSwitched) => {
-  if (isSwitched) {
-    console.warn('Can not access OpenAI API Url, switched to alter base url!');
-  }
-  console.log('OpenAI API Url:', client.defaults.baseURL);
-});
+// autoSwitchToAlterBaseUrl().then((isSwitched) => {
+//   if (isSwitched) {
+//     console.warn('Can not access OpenAI API Url, switched to alter base url!');
+//   }
+//   console.log('OpenAI API Url:', client.defaults.baseURL);
+// });
 
 export function useAxios(config: AxiosRequestConfig) {
   const [data, setData] = useState<Record<string, unknown> | null>(null);
